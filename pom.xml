@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.devebot.opflow</groupId>
-    <artifactId>opflow-java-exporter</artifactId>
+    <artifactId>opflow-prom-exporter</artifactId>
     <version>0.2.0</version>
     <packaging>jar</packaging>
-    <name>opflow-java-exporter</name>
+    <name>opflow-prom-exporter</name>
     <description>Opflow Prometheus Exporter</description>
     <url>https://github.com/opflow/opflow-java-exporter</url>
     <licenses>
@@ -224,7 +224,7 @@
                             <verbose>false</verbose>
                             <dateFormat>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</dateFormat>
                             <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                            <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/scm/com.devebot.opflow/opflow-java-exporter/git-info.json</generateGitPropertiesFilename>
+                            <generateGitPropertiesFilename>${project.build.outputDirectory}/META-INF/scm/com.devebot.opflow/opflow-prom-exporter/git-info.json</generateGitPropertiesFilename>
                             <includeOnlyProperties>
                                 <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
                                 <includeOnlyProperty>^git.commit.id$</includeOnlyProperty>
