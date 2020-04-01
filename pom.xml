@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <name>opflow-prom-exporter</name>
     <description>Opflow Prometheus Exporter</description>
-    <url>https://github.com/opflow/opflow-java-exporter</url>
+    <url>https://github.com/opflow/opflow-prom-exporter</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -23,9 +23,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/opflow/opflow-java-exporter.git</connection>
-        <developerConnection>scm:git:ssh://github.com:opflow/opflow-java-exporter.git</developerConnection>
-        <url>https://github.com/opflow/opflow-java-exporter/tree/master</url>
+        <connection>scm:git:git://github.com/opflow/opflow-prom-exporter.git</connection>
+        <developerConnection>scm:git:ssh://github.com:opflow/opflow-prom-exporter.git</developerConnection>
+        <url>https://github.com/opflow/opflow-prom-exporter/tree/master</url>
     </scm>
     
     <properties>
