@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OpflowPromExporter extends OpflowPromMeasurer {
     private final static Logger LOG = LoggerFactory.getLogger(OpflowPromExporter.class);
+    private final static String EMPTY = "";
     
     private final String host;
     private final Integer port;
@@ -59,6 +60,9 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
     
     @Override
     public void updateComponentInstance(String componentType, String componentId, GaugeAction action) {
+        if (componentType == null || componentId == null) {
+            return;
+        }
         Gauge.Child metric = assertComponentInstanceGauge().labels(OpflowLogTracer.getInstanceId(), componentType);
         switch(action) {
             case INC:
@@ -85,6 +89,9 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
     
     @Override
     public void updateEngineConnection(String connectionOwner, String connectionType, GaugeAction action) {
+        if (connectionOwner == null || connectionType == null) {
+            return;
+        }
         Gauge.Child metric = assertEngineConnectionGauge().labels(OpflowLogTracer.getInstanceId(), connectionOwner, connectionType);
         switch(action) {
             case INC:
@@ -111,6 +118,10 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
     
     @Override
     public void countRpcInvocation(String componentType, String flowName, String routineSignature, String status) {
+        if (componentType == null || flowName == null || status == null) {
+            return;
+        }
+        routineSignature = (routineSignature != null) ? routineSignature : EMPTY;
         assertRpcInvocationCounter().labels(OpflowLogTracer.getInstanceId(), componentType, flowName, routineSignature, status).inc();
     }
     
