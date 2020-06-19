@@ -25,6 +25,10 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
     private Gauge engineConnectionGauge;
     private Counter rpcInvocationCounter;
     
+    private final Object componentInstanceGaugeLock = new Object();
+    private final Object engineConnectionGaugeLock = new Object();
+    private final Object rpcInvocationCounterLock = new Object();
+    
     public OpflowPromExporter(Map<String, Object> kwargs) throws OpflowOperationException {
         kwargs = OpflowObjectTree.ensureNonNull(kwargs);
         
@@ -48,17 +52,24 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
     
     private Gauge assertComponentInstanceGauge() {
         if (componentInstanceGauge == null) {
-            Gauge.Builder builder = Gauge.build()
-                    .name("opflow_component_instance")
-                    .help("Number of component instances.")
-                    .labelNames("instance_id", "component_type");
-            componentInstanceGauge = builder.register();
+            synchronized (componentInstanceGaugeLock) {
+                if (componentInstanceGauge == null) {
+                    Gauge.Builder builder = Gauge.build()
+                            .name("opflow_component_instance")
+                            .help("Number of component instances.")
+                            .labelNames("instance_id", "component_type");
+                    componentInstanceGauge = builder.register();
+                }
+            }
         }
         return componentInstanceGauge;
     }
     
     @Override
     public void updateComponentInstance(String componentType, String componentId, GaugeAction action) {
+        if (componentType == null || componentId == null) {
+            return;
+        }
         Gauge.Child metric = assertComponentInstanceGauge().labels(OpflowLogTracer.getInstanceId(), componentType);
         switch(action) {
             case INC:
@@ -74,17 +85,24 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
     
     private Gauge assertEngineConnectionGauge() {
         if (engineConnectionGauge == null) {
-            Gauge.Builder builder = Gauge.build()
-                    .name("opflow_engine_connection")
-                    .help("Number of active connections.")
-                    .labelNames("instance_id", "connection_owner", "connection_type");
-            engineConnectionGauge = builder.register();
+            synchronized (engineConnectionGaugeLock) {
+                if (engineConnectionGauge == null) {
+                    Gauge.Builder builder = Gauge.build()
+                            .name("opflow_engine_connection")
+                            .help("Number of active connections.")
+                            .labelNames("instance_id", "connection_owner", "connection_type");
+                    engineConnectionGauge = builder.register();
+                }
+            }
         }
         return engineConnectionGauge;
     }
     
     @Override
     public void updateEngineConnection(String connectionOwner, String connectionType, GaugeAction action) {
+        if (connectionOwner == null || connectionType == null) {
+            return;
+        }
         Gauge.Child metric = assertEngineConnectionGauge().labels(OpflowLogTracer.getInstanceId(), connectionOwner, connectionType);
         switch(action) {
             case INC:
@@ -100,17 +118,24 @@ public class OpflowPromExporter extends OpflowPromMeasurer {
 
     private Counter assertRpcInvocationCounter() {
         if (rpcInvocationCounter == null) {
-            Counter.Builder builder = Counter.build()
-                    .name("opflow_rpc_invocation_total")
-                    .help("The total of the RPC invocation events")
-                    .labelNames("instance_id", "component_type", "flow_name", "routine_id", "status");
-            rpcInvocationCounter = builder.register();
+            synchronized (rpcInvocationCounterLock) {
+                if (rpcInvocationCounter == null) {
+                    Counter.Builder builder = Counter.build()
+                            .name("opflow_rpc_invocation_total")
+                            .help("The total of the RPC invocation events")
+                            .labelNames("instance_id", "component_type", "flow_name", "routine_id", "status");
+                    rpcInvocationCounter = builder.register();
+                }
+            }
         }
         return rpcInvocationCounter;
     }
     
     @Override
     public void countRpcInvocation(String componentType, String flowName, String routineSignature, String status) {
+        if (componentType == null || flowName == null || status == null) {
+            return;
+        }
         assertRpcInvocationCounter().labels(OpflowLogTracer.getInstanceId(), componentType, flowName, routineSignature, status).inc();
     }
     
