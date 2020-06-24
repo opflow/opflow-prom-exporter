@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.devebot.opflow</groupId>
     <artifactId>opflow-prom-exporter</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.0.Fb1</version>
     <packaging>jar</packaging>
     <name>opflow-prom-exporter</name>
     <description>Opflow Prometheus Exporter</description>
@@ -32,7 +32,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <artifact.name>${project.artifactId}</artifact.name>
         <java.version>1.8</java.version>
-        <opflow.version>0.3.1-SNAPSHOT</opflow.version>
+        <opflow.version>0.3.0</opflow.version>
         <prometheus.version>0.8.0</prometheus.version>
     </properties>
 
